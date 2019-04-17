@@ -1,0 +1,109 @@
+*{
+	box-sizing:border-box;
+}
+html, body{
+	height:100%;
+	margin:0;
+}
+body{
+	display:flex;
+	flex-direction:column;
+}
+main {
+	flex:1 0 auto;
+	display:flex;
+}
+aside{
+	flex:0 0 40px;
+	display:flex;
+	flex-direction:column;
+	justify-content:space-around;
+	background-color:#f2f2f2;
+	align-items:center;
+}
+aside i.fa{
+	font-size:0.9rem;
+}
+
+.content{
+	display:flex;
+	flex:1 1 auto;
+	flex-direction:column;
+}
+.music-head{
+	flex:0 0 280px;
+	display:flex;
+	background-color:#4e4e4e;
+	padding: 40px;
+}
+.music-list{
+	flex:1 0 auto;
+	list-style:none;
+	padding:5px 10px 0px;
+}
+li{
+	display:flex;
+	min-height:50px;
+	padding:0 20px;
+}
+li p{
+	flex:0 0 25%;
+}
+li span.catty-cloud{
+	border:1px solid black;
+	font-size:0.6rem;
+	padding:3px;
+}
+li:nth-child(2n){
+	background-color:#f2f2f2;
+}
+
+.catty-music{
+	flex:1 1 auto;
+	display:flex;
+	flex-direction:column;
+	font-weight:300;
+	color:#fff;
+	padding-left:50px;
+}
+.catty-music div:nth-child(1){
+	margin-bottom:auto;
+}
+.catty-music div:nth-child(2) i.fa{
+	font-size:0.9em;
+	padding:0 0.7em;
+	font-weight:300;
+}
+.catty-music div:nth-child(1) p:first-child{
+	font-size:1.8em;
+	margin:0 0 10px;
+}
+.catty-music div:nth-child(1) p:not(:first-child){
+	font-size:0.9em;
+	margin:0;
+}
+
+footer{
+	flex:0 0 90px;
+	padding: 10px;
+	color:#fff;
+	background-color:rgba(61, 100, 158, .9);
+	display:flex;
+}
+.catty-music-small{
+	display:flex;
+	margin-right:auto;
+}
+.catty-music-small p{
+	margin:8px 0;
+}
+.catty-music-small img{
+	width:100px;
+	padding-right: 10px;
+}
+.catty-music-controls{
+	display:flex;
+	align-items:center;
+	justify-content:space-between;
+	width:50%;
+}

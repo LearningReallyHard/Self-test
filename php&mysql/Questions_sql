@@ -1,0 +1,210 @@
+(1)
+SHOW DATABASES;
+CREATE DATABASE topic;
+DROP DATABASE topic;
+USE topic;
+SHOW TABLES;
+DROP TABLE topic;
+DESC topic;
+
+(2)
+CREATE TABLE topic(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  title VARCHAR(100) NOT NULL,
+  description TEXT NULL,
+  created DATETIME NOT NULL,
+  author VARCHAR(30) NULL,
+  profile VARCHAR(100) NULL,
+  PRIMARY KEY(id)
+);
+
+(3)
+INSERT INTO topic ( title, description, created )
+VALUES('Test','Practise',NOW(),'','');
+
+(4)
+SELECT * FROM topic;
+SELECT title, id FROM topic;
+SELECT * FROM topic WHERE author = 'egoing';
+SELECT * FROM topic WHERE author = 'egoing' ORDER BY id DESC or ASC
+SELECT * FROM topic WHERE author = 'egoing' ORDER BY id DESC OR ASC LIMIT 2
+
+(5)
+UPDATE topic SET description='modified', created=NOW() WHERE id=1;
+DELETE FROM topic WHERE id=1;
+RENAME TABLE topic TO topic_backup;
+
+(6)
+SELECT topic.id AS topic_id, title from topic JOIN author ON topic.author_id = author.id;
+
+(7)
+SELECT DISTINCT profile FROM author
+SELECT COUNT(profile) FROM author
+
+(8)
+SELECT * FROM EMP WHERE SAL >= 2500
+SELECT * FROM EMP WHERE ENAME (NOT) LIKE 'S%'
+SELECT * FROM EMP WHERE ENAME (NOT) LIKE '%T%'
+SELECT * FROM EMP WHERE COMM = 300 OR COMM = 500 ( COMM IN (300,500) )
+SELECT * FROM EMP WHERE COMM NOT IN ( 300, 500 )
+SELECT * FROM EMP WHERE SAL (NOT) BETWEEN 1200 AND 3500
+SELECT * FROM EMP WHERE SAL = 30 AND COMM = 300
+SELECT * FROM EMP WHERE NOT SAL = 30
+SELECT * FROM EMP WHERE MGR IS NULL
+
+
+(9)
+SELECT DEPTNO, AVG(SAL) FROM EMP GROUP BY DEPTNO ( HAVING AVG(SAL) >= 2000 );
+SELECT DEPTNO, COUNT(*), COUNT(COMM) FROM EMP GROUP BY DEPTNO;
+SELECT DEPTNO, MAX(SAL), MIN(SAL) FROM EMP GROUP BY DEPTNO;
+SELECT DEPTNO, AVG(SAL) FROM EMP WHERE SAL >= 1000 GROUP BY DEPTNO HAVING AVG(SAL) >= 2000;
+SELECT EMPNO, ENAME, SAL FROM EMP ORDER BY SAL DESC, ENAME ASC;
+UPDATE EMP SET SAL = SAL + 300 WHERE ENAME = 'A'
+DELETE FROM EMP WHERE ENAME IN ('A','B','C')
+
+(10)
+ALTER TABLE topic ADD COLUMN author_id INT(11)
+
+(12)
+SELECT * FROM A WHERE GROUP ILIKE 'dj%'
+SELECT year,month, COUNT(*) AS count FROM A GROUP BY year,month ORDER BY year, month
+
+(13)
+-SELECT player_name, state,
+        CASE WHEN state = 'CA' THEN 'yes'
+        ELSE NULL END as from_california
+  FROM benn.college_football_players
+  ORDER BY 3
+
+-SELECT player_name,
+      height,
+      CASE WHEN height > 74 THEN 'over 74'
+           WHEN height > 72 AND height <= 74 THEN '73-74'
+           WHEN height > 70 AND height <= 72 THEN '71-72'
+           ELSE 'under 70' END AS height_group
+ FROM benn.college_football_players
+
+-SELECT *,
+  CASE WHEN year IN ('JR', 'SR') THEN player_name ELSE NULL END as Junior_senior_name
+  FROM benn.college_football_players
+
+-SELECT CASE WHEN state IN ('CA','OR','WA') THEN 'West Coast'
+            WHEN state = 'TX' THEN 'Texas'
+            ELSE 'Others' END AS regions,
+       COUNT(1)
+FROM benn.college_football_players
+WHERE weight >= 300
+GROUP BY 1
+
+-SELECT CASE WHEN year IN ('FR','SO') THEN 'FR,SO'
+            WHEN year IN ('JR','SR') THEN 'JR,SR'
+            ELSE NULL END AS year,
+       SUM(weight)
+FROM benn.college_football_players
+WHERE state = 'CA'
+GROUP BY 1
+
+-SELECT state,
+      COUNT(CASE WHEN year = 'FR' THEN 1 ELSE NULL END) AS fr_count,
+      COUNT(CASE WHEN year = 'SO' THEN 1 ELSE NULL END) AS so_count,
+      COUNT(CASE WHEN year = 'JR' THEN 1 ELSE NULL END) AS jr_count,
+      COUNT(CASE WHEN year = 'SR' THEN 1 ELSE NULL END) AS sr_count,
+      COUNT(1) AS total_number
+FROM benn.college_football_playersa
+GROUP BY state
+ORDER BY total_number DESC
+
+-SELECT CASE WHEN school_name < 'n' THEN 'A-M'
+            WHEN school_name >= 'n' THEN 'N-Z'
+            ELSE NULL END AS school_name_group,
+       COUNT(1) AS players
+  FROM benn.college_football_players
+ GROUP BY 1
+
+
+(14)
+- SELECT player.school_name,
+FROM A player
+WHERE state = 'GA'
+ORDER BY weight DESC
+
+(16)
+SELECT companies.code,
+       COUNT(DISTINCT companies.apple) AS unique_apple,
+       COUNT(DISTINCT acquisitions.grape) AS unique_grape
+  FROM A companies
+  LEFT JOIN B acquisitions
+    ON companies.name = acquisitions.name
+ WHERE companies.code IS NOT NULL
+ GROUP BY 1
+ ORDER BY 3 DESC
+
+(17)
+SELECT *
+  FROM A companies
+  LEFT JOIN B acquisitions
+    ON companies.name = acquisitions.name
+   AND acquisitions.title != 'a'
+
+ (18)
+ SELECT *
+  FROM A companies
+  LEFT JOIN B acquisitions
+    ON companies.name = acquisitions.name
+ WHERE acquisitions.fruit != 'apple'
+    OR acquisitions.fruit IS NULL
+
+(19)
+SELECT companies.name,
+       companies.status,
+       COUNT(DISTINCT investments.name)
+  FROM A companies
+  LEFT JOIN B investments
+    ON companies.name = investments.name
+ WHERE companies.code = 'NY'
+ GROUP BY 1,2
+ ORDER BY 3 DESC
+
+(20)
+SELECT CASE WHEN investments.name IS NULL THEN 'No name'
+            ELSE investments.name END,
+       COUNT(DISTINCT companies.link)
+  FROM A companies
+  LEFT JOIN B investments
+    ON companies.name = investments.name
+ GROUP BY 1
+ ORDER BY 2 DESC
+
+ (21)
+ SELECT COUNT(CASE WHEN companies.name IS NOT NULL AND investments.company_name IS NULL
+                       THEN 1 ELSE NULL END) AS companies_only,
+            COUNT(CASE WHEN companies.name IS NOT NULL AND investments.name IS NOT NULL
+                       THEN 1 ELSE NULL END) AS both_tables,
+            COUNT(CASE WHEN companies.name IS NULL AND investments.name IS NOT NULL
+                       THEN 1 ELSE NULL END) AS investments_only
+       FROM A companies
+       FULL JOIN B investments
+         ON companies.name = investments.name
+
+(22)
+SELECT *
+  FROM A1
+ WHERE name ILIKE 'T%'
+
+ UNION ALL
+
+SELECT *
+  FROM A2
+ WHERE name ILIKE 'M%'
+
+(23)
+SELECT companies.link,
+       companies.name,
+       companies.status,
+       COUNT(investments.link)
+  FROM A companies
+  LEFT JOIN B investments
+    ON companies.link = investments.link
+   (AND investments.year > companies.year)
+   (WHERE investments.year > companies.year)
+ GROUP BY 1,2, 3
